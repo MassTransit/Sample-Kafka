@@ -1,46 +1,54 @@
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
-using MassTransit;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Sample.Components;
+using Sample.Components.Services;
 using Sample.Contracts;
 using Sample.Shared;
-using Serilog;
-using Serilog.Events;
-
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .MinimumLevel.Override("MassTransit", LogEventLevel.Debug)
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.Hosting", LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host
-    .UseSerilog()
+    .ConfigureSerilog()
     .UseMassTransit((hostContext, x) =>
     {
+        x.AddMongoDbConfiguration(hostContext.Configuration);
+
+        x.TryAddScoped<IProductValidationService, ProductValidationService>();
+
         x.UsingInMemory();
 
         x.AddRider(r =>
         {
             r.AddKafkaComponents();
 
-            var topicName = hostContext.Configuration.GetValue<string>("Topics:WarehouseEvent");
-            if (string.IsNullOrWhiteSpace(topicName))
-                throw new ConfigurationException("The topicName was not configured: WarehouseEvent");
+            var location = hostContext.Configuration.GetValue<int>("Warehouse:Location");
+            if (location == default)
+                throw new ConfigurationException("The warehouse location is required and was not configured.");
 
-            r.AddProducer<string, WarehouseEvent>(topicName, (context, cfg) =>
+            var warehouseTopicName = $"events.warehouse.{location}";
+
+            r.AddProducer<string, WarehouseEvent>(warehouseTopicName, (context, cfg) =>
             {
                 // Configure the AVRO serializer, with the schema registry client
-                cfg.SetValueSerializer(new AvroSerializer<WarehouseEvent>(context.GetService<ISchemaRegistryClient>()));
+                cfg.SetValueSerializer(new AvroSerializer<WarehouseEvent>(context.GetRequiredService<ISchemaRegistryClient>()));
             });
 
+            r.AddProducer<string, ShipmentManifestReceived>("events.erp", (context, cfg) =>
+            {
+                // Configure the AVRO serializer, with the schema registry client
+                cfg.SetValueSerializer(new AvroSerializer<ShipmentManifestReceived>(context.GetRequiredService<ISchemaRegistryClient>()));
+            });
 
-            r.UsingKafka((context, cfg) => cfg.Host(context));
+            r.UsingKafka((context, cfg) =>
+            {
+                cfg.ClientId = "WarehouseApi";
+
+                cfg.Host(context);
+            });
         });
     });
+
 
 builder.Services.AddControllers();
 

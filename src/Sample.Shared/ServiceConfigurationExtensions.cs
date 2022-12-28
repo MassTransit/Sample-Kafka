@@ -1,13 +1,23 @@
+namespace Sample.Shared;
+
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Events;
 
-namespace Sample.Shared;
 
 public static class ServiceConfigurationExtensions
 {
+    /// <summary>
+    /// Configure the Confluent Schema Registry for connection to Confluent Cloud
+    /// </summary>
+    /// <param name="services"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public static T AddKafkaComponents<T>(this T services)
         where T : IServiceCollection
     {
@@ -31,7 +41,17 @@ public static class ServiceConfigurationExtensions
     }
 
     /// <summary>
-    /// Configure the Kafka Host
+    /// Just an example, but some retry/kill switch combination to stop processing when the consumer/saga faults repeatedly.
+    /// </summary>
+    /// <param name="configurator"></param>
+    public static void UseSampleRetryConfiguration(this IKafkaTopicReceiveEndpointConfigurator configurator)
+    {
+        configurator.UseKillSwitch(k => k.SetActivationThreshold(1).SetRestartTimeout(m: 1).SetTripThreshold(0.2).SetTrackingPeriod(m: 1));
+        configurator.UseMessageRetry(retry => retry.Interval(1000, TimeSpan.FromSeconds(1)));
+    }
+
+    /// <summary>
+    /// Configure the Kafka Host using SASL_SSL to connect to Confluent Cloud
     /// </summary>
     /// <param name="configurator"></param>
     /// <param name="context"></param>
@@ -49,5 +69,22 @@ public static class ServiceConfigurationExtensions
                 s.Password = options.Password;
             });
         });
+    }
+
+    public static T ConfigureSerilog<T>(this T builder)
+        where T : IHostBuilder
+    {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .MinimumLevel.Override("MassTransit", LogEventLevel.Debug)
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.Hosting", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateLogger();
+
+        builder.UseSerilog();
+
+        return builder;
     }
 }

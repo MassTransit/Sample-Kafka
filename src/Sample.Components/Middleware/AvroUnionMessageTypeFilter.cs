@@ -1,14 +1,15 @@
-using MassTransit;
+namespace Sample.Components.Middleware;
 
-namespace Sample.Components.StateMachines;
+using Avro.Specific;
 
-public class AvroFilter<TAvro> :
+
+public class AvroUnionMessageTypeFilter<TAvro> :
     IFilter<ConsumeContext>
-    where TAvro : class
+    where TAvro : class, ISpecificRecord
 {
     readonly Func<TAvro, object> _propertySelector;
 
-    public AvroFilter(Func<TAvro, object> propertySelector)
+    public AvroUnionMessageTypeFilter(Func<TAvro, object> propertySelector)
     {
         _propertySelector = propertySelector;
     }

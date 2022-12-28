@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.MongoDb" Version="8.0.10-develop.730" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="MassTransit.MongoDb" Version="8.0.10"/>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sample.Components\Sample.Components.csproj" />
+    <ProjectReference Include="..\Sample.Components\Sample.Components.csproj"/>
   </ItemGroup>
 </Project>

@@ -1,5 +1,3 @@
-using MassTransit;
-
 namespace Sample.Components.StateMachines;
 
 public class ContainerState :

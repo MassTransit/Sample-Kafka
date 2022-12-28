@@ -1,0 +1,82 @@
+[
+  {
+    "type": "record",
+    "namespace": "Sample.Contracts",
+    "name": "Product",
+    "displayName": "Product",
+    "fields": [
+      {
+        "name": "Sku",
+        "displayName": "Sku",
+        "maxLength": 100,
+        "type": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "SerialNumber",
+        "displayName": "SerialNumber",
+        "maxLength": 100,
+        "type": {
+          "type": "string"
+        }
+      }
+    ]
+  },
+  {
+    "namespace": "Sample.Contracts",
+    "type": "record",
+    "name": "ShipmentManifestReceived",
+    "displayName": "Shipment Manifest Received",
+    "fields": [
+      {
+        "name": "SourceSystemId",
+        "displayName": "Source System Id",
+        "maxLength": 100,
+        "type": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "EventId",
+        "displayName": "Event Id",
+        "maxLength": 100,
+        "type": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "Timestamp",
+        "displayName": "Timestamp",
+        "maxLength": 50,
+        "type": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "PurchaseOrderNumber",
+        "displayName": "Purchase Order Number",
+        "maxLength": 100,
+        "type": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "DeliveryLocation",
+        "displayName": "Delivery Location",
+        "type": {
+          "type": "int"
+        }
+      },
+      {
+        "name": "Items",
+        "displayName": "Items",
+        "type": {
+          "items": "Product",
+          "type": "array"
+        },
+        "default": []
+      }
+    ]
+  }
+]

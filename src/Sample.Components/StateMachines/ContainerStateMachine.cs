@@ -1,15 +1,14 @@
+namespace Sample.Components.StateMachines;
+
 using System.Security.Cryptography;
 using System.Text;
-using MassTransit;
-using Microsoft.Extensions.Logging;
-using Sample.Contracts;
+using Contracts;
 
-namespace Sample.Components.StateMachines;
 
 public sealed class ContainerStateMachine :
     MassTransitStateMachine<ContainerState>
 {
-    public ContainerStateMachine(ILogger<ContainerStateMachine> logger)
+    public ContainerStateMachine()
     {
         InstanceState(x => x.CurrentState);
 
@@ -72,15 +71,15 @@ public sealed class ContainerStateMachine :
     public Event<ProductPicked>? ProductPicked { get; }
     public Event<ContainerShipped>? ContainerShipped { get; }
 
-    public State Picking { get; }
-    public State Shipped { get; }
+    public State? Picking { get; }
+    public State? Shipped { get; }
 
-    static Guid GenerateIdFromLicensePlateNumber(string packageId)
+    static Guid GenerateIdFromLicensePlateNumber(string number)
     {
-        if (string.IsNullOrWhiteSpace(packageId))
-            throw new ArgumentNullException(nameof(packageId));
+        if (string.IsNullOrWhiteSpace(number))
+            throw new ArgumentNullException(nameof(number));
 
-        var data = MD5.HashData(Encoding.UTF8.GetBytes(packageId));
+        var data = MD5.HashData(Encoding.UTF8.GetBytes(number));
 
         return new Guid(data);
     }

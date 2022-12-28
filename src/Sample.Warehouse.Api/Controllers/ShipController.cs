@@ -7,24 +7,24 @@ using Models;
 
 [ApiController]
 [Route("[controller]")]
-public class PickController :
+public class ShipController :
     ControllerBase
 {
-    readonly ILogger<PickController> _logger;
+    readonly ILogger<ShipController> _logger;
 
-    public PickController(ILogger<PickController> logger)
+    public ShipController(ILogger<ShipController> logger)
     {
         _logger = logger;
     }
 
     /// <summary>
-    /// Submit the details of a product that was picked.
+    /// Submit the details of a product received
     /// </summary>
     /// <param name="detail"></param>
     /// <param name="producer">Topic producer for sending event to Kafka</param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> Post(PickDetail detail, [FromServices] ITopicProducer<string, WarehouseEvent> producer)
+    public async Task<IActionResult> Post(ShipDetail detail, [FromServices] ITopicProducer<string, WarehouseEvent> producer)
     {
         if (!ModelState.IsValid)
             return BadRequest();
@@ -34,17 +34,16 @@ public class PickController :
             SourceSystemId = detail.SourceSystemId,
             EventId = detail.EventId,
             Timestamp = detail.Timestamp?.ToString("O"),
-            Event = new ProductPicked
+            Event = new ContainerShipped
             {
                 OrderNumber = detail.OrderNumber,
-                OrderLine = detail.OrderLine!.Value,
-                Sku = detail.Sku,
-                SerialNumber = detail.SerialNumber,
                 LicensePlateNumber = detail.LicensePlateNumber,
+                Carrier = detail.Carrier,
+                TrackingNumber = detail.TrackingNumber,
             }
         }, HttpContext.RequestAborted);
 
-        _logger.LogInformation("Picked: {OrderNumber} ({OrderLine}) {LicensePlateNumber}", detail.OrderNumber, detail.OrderLine, detail.LicensePlateNumber);
+        _logger.LogInformation("Shipped: {OrderNumber} ({LicensePlateNumber})", detail.OrderNumber, detail.LicensePlateNumber);
 
         return Accepted();
     }

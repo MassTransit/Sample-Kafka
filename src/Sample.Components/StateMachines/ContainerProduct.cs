@@ -9,16 +9,21 @@ public class ContainerProduct :
 
     public bool Equals(ContainerProduct? other)
     {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
+        if (ReferenceEquals(null, other))
+            return false;
+        if (ReferenceEquals(this, other))
+            return true;
         return Sku == other.Sku && SerialNumber == other.SerialNumber && OrderLine == other.OrderLine;
     }
 
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
+        if (ReferenceEquals(null, obj))
+            return false;
+        if (ReferenceEquals(this, obj))
+            return true;
+        if (obj.GetType() != GetType())
+            return false;
         return Equals((ContainerProduct)obj);
     }
 
@@ -26,7 +31,7 @@ public class ContainerProduct :
     {
         unchecked
         {
-            // ReSharper disable  NonReadonlyMemberInGetHashCode
+            // ReSharper disable NonReadonlyMemberInGetHashCode
             var hashCode = Sku != null ? Sku.GetHashCode() : 0;
             hashCode = (hashCode * 397) ^ (SerialNumber != null ? SerialNumber.GetHashCode() : 0);
             hashCode = (hashCode * 397) ^ OrderLine.GetHashCode();

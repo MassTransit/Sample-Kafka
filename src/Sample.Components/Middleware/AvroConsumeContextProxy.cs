@@ -1,7 +1,7 @@
-using MassTransit;
+namespace Sample.Components.Middleware;
+
 using MassTransit.Context;
 
-namespace Sample.Components.StateMachines;
 
 public class AvroConsumeContextProxy<TAvro> :
     ConsumeContextProxy
@@ -20,7 +20,7 @@ public class AvroConsumeContextProxy<TAvro> :
         if (base.TryGetMessage(out consumeContext))
             return true;
 
-        if (base.TryGetMessage<TAvro>(out var messageContext))
+        if (base.TryGetMessage<TAvro>(out ConsumeContext<TAvro>? messageContext))
         {
             var messageProperty = _propertySelector(messageContext.Message);
             if (messageProperty is T message)
