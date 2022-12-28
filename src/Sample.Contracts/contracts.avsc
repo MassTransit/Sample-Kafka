@@ -1,0 +1,156 @@
+{
+  "namespace": "Sample.Contracts",
+  "type": "record",
+  "name": "WarehouseEvent",
+  "fields": [
+    {
+      "name": "SourceSystemId",
+      "displayName": "Source System Id",
+      "maxLength": 100,
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "EventId",
+      "displayName": "Event Id",
+      "maxLength": 100,
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "Timestamp",
+      "displayName": "Timestamp",
+      "maxLength": 50,
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "Event",
+      "displayName": "Event",
+      "type": [
+        {
+          "type": "record",
+          "namespace": "Sample.Contracts",
+          "name": "ProductReceived",
+          "displayName": "Product Received",
+          "fields": [
+            {
+              "name": "PurchaseOrderNumber",
+              "displayName": "Purchase Order Number",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "Sku",
+              "displayName": "Sku",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "SerialNumber",
+              "displayName": "SerialNumber",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        {
+          "type": "record",
+          "namespace": "Sample.Contracts",
+          "name": "ProductPicked",
+          "displayName": "Product Picked",
+          "fields": [
+            {
+              "name": "OrderNumber",
+              "displayName": "Order Number",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "OrderLine",
+              "displayName": "OrderLine",
+              "type": {
+                "type": "long"
+              }
+            },
+            {
+              "name": "Sku",
+              "displayName": "Sku",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "SerialNumber",
+              "displayName": "SerialNumber",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "LicensePlateNumber",
+              "displayName": "LicensePlateNumber",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        {
+          "type": "record",
+          "namespace": "Sample.Contracts",
+          "name": "ContainerShipped",
+          "displayName": "Container Shipped",
+          "fields": [
+            {
+              "name": "OrderNumber",
+              "displayName": "Order Number",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "LicensePlateNumber",
+              "displayName": "LicensePlateNumber",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "Carrier",
+              "displayName": "Carrier",
+              "maxLength": 50,
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "TrackingNumber",
+              "displayName": "Tracking Number",
+              "maxLength": 100,
+              "type": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
