@@ -39,7 +39,7 @@ public class ShipController :
                 OrderNumber = detail.OrderNumber,
                 LicensePlateNumber = detail.LicensePlateNumber,
                 Carrier = detail.Carrier,
-                TrackingNumber = detail.TrackingNumber,
+                TrackingNumber = detail.TrackingNumber
             }
         }, HttpContext.RequestAborted);
 

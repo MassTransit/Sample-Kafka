@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-Sample.Backend-6d4f816a-8da6-4ec0-a1bc-1a739ed17bd6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.MongoDb" Version="8.0.10"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0"/>
+    <PackageReference Include="MassTransit.MongoDb" Version="8.2.1"/>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
   </ItemGroup>
 
   <ItemGroup>

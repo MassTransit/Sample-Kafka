@@ -47,7 +47,7 @@ public class ReceiveController :
             {
                 PurchaseOrderNumber = detail.PurchaseOrderNumber,
                 Sku = detail.Sku,
-                SerialNumber = detail.SerialNumber,
+                SerialNumber = detail.SerialNumber
             }
         }, HttpContext.RequestAborted);
 

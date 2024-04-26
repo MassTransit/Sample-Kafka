@@ -40,7 +40,7 @@ public class PickController :
                 OrderLine = detail.OrderLine!.Value,
                 Sku = detail.Sku,
                 SerialNumber = detail.SerialNumber,
-                LicensePlateNumber = detail.LicensePlateNumber,
+                LicensePlateNumber = detail.LicensePlateNumber
             }
         }, HttpContext.RequestAborted);
 

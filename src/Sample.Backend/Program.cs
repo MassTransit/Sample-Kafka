@@ -7,8 +7,6 @@ using Sample.Components.Consumers;
 using Sample.Components.StateMachines;
 using Sample.Contracts;
 using Sample.Shared;
-using Serilog;
-using Serilog.Events;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureSerilog()
